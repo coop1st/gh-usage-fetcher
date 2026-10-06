@@ -1,0 +1,19 @@
+name: Fetch usage snapshot
+on:
+  schedule:
+    # Fridays, well before the 18:00 Dublin report. Two slots because
+    # GitHub cron runs on this account have started hours late.
+    - cron: "0 3 * * 5"
+    - cron: "0 11 * * 5"
+  workflow_dispatch:
+permissions: {}
+concurrency: fetch
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python fetch_usage.py
+        env:
+          USAGE_TOKEN: ${{ secrets.USAGE_TOKEN }}
