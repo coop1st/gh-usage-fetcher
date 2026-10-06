@@ -23,7 +23,9 @@ jobs:
       # GitHub disables schedules in public repos after 60 days without
       # activity; re-enabling the workflow resets that clock.
       - if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: >
           curl -s -o /dev/null -w "keepalive %{http_code}\n" -X PUT
-          -H "Authorization: Bearer ${{ github.token }}"
+          -H "Authorization: Bearer $GH_TOKEN"
           https://api.github.com/repos/${{ github.repository }}/actions/workflows/fetch.yml/enable
